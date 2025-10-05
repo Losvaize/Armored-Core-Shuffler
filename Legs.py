@@ -22,7 +22,8 @@ class Legs():
                   max_weight: int, 
                   speed: int,
                   stability: int, 
-                  jump_function: str):
+                  jump_function: str,
+                  tier: int):
         
         self.id = id
         self.name = name
@@ -37,6 +38,7 @@ class Legs():
         self.speed = speed
         self.stability = stability
         self.jump_function = jump_function
+        self.tier = tier # Tier 1 lowest. Tier 4 Highest
 
 all_legs = (
     Legs(0x1D, "LN-1001", "HUMANOID LEGS", 28500, 1966, 1725, 3235, 556, 531, 4470, 277, 1018, "PROVIDED"), #Balanced, standard humanoid legs.

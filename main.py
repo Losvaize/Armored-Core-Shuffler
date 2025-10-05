@@ -3,6 +3,7 @@ import random
 import Legs
 import Cores
 import Generators
+import Boosters
 
 def shuffle_random_leg ():
     random_legs = random.choice(Legs.all_legs)
