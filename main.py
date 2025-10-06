@@ -3,8 +3,12 @@ import random
 import Legs
 import Cores
 import Generators
+import Heads 
 import Arms
 import Boosters
+import FCS
+import Arm_Weapon_R
+
 
 def shuffle_random_leg ():
     random_legs = random.choice(Legs.all_legs)
@@ -39,7 +43,20 @@ def shuffle_random_booster():
     random_booster = random.choice(Boosters.all_boosters)
     return(random_booster)
 
+def shuffle_random_head():
+    random_head = random.choice(Heads.all_heads)
+    return(random_head)
+
+def shuffle_random_FCS():
+    random_FCS = random.choice(FCS.all_fcs)
+    return(random_FCS)
+
+def shuffle_random_arm_weapon_r():
+    random_arm_weapon_r = random.choice(Arm_Weapon_R.all_arm_weapon_r)
+    return(random_arm_weapon_r)
+
 def main():
+
     #Defining each maximum part value
     Valid_AC = ""
     ac_remaining_weight = 0
@@ -51,12 +68,20 @@ def main():
     ac_generator = shuffle_random_generator()
     ac_arms = shuffle_random_arms()
     ac_booster = shuffle_random_booster()
+    ac_head = shuffle_random_head ()
+    ac_FCS = shuffle_random_FCS ()
+    ac_arm_weapon_r = shuffle_random_arm_weapon_r()
 
-    
-    
-    ac_remaining_weight = ac_legs.max_weight - ac_core.weight - ac_generator.weight - ac_arms.weight - ac_booster.weight
-    ac_core_weight = ac_core.max_weight - ac_arms.weight -
-    ac_remaining_energy = ac_generator.energy_output - ac_core.energy_drain - ac_legs.energy_drain - ac_arms.energy_drain - ac_booster.energy_drain
+
+
+    ac_remaining_weight = ac_legs.max_weight - ac_core.weight - ac_generator.weight - ac_arms.weight - ac_booster.weight - ac_head.weight - ac_FCS.weight 
+    if ac_arms.humanoid_arm == True:
+            - ac_arm_weapon_r.weight
+    else:
+        ac_arm_weapon_r.name = "EQUIPMENT IMPOSSIBLE"
+
+    ac_core_weight = ac_core.max_weight - ac_arms.weight
+    ac_remaining_energy = ac_generator.energy_output - ac_core.energy_drain - ac_legs.energy_drain - ac_arms.energy_drain - ac_booster.energy_drain - ac_head.energy_drain - ac_FCS.energy_drain
 
     if (ac_remaining_weight < 0 or ac_core_weight < 0 or ac_remaining_energy < 0):
         invalid_AC = True
@@ -64,9 +89,15 @@ def main():
         invalid_AC = False
 
     while (invalid_AC):  
-        if (ac_remaining_weight < 0 or ac_core_weight < 0 or ac_remaining_energy < 0):
+        if (ac_remaining_weight < 0):    
             invalid_AC = True
-            return print("INVALID AC CONFIGURATION") #closes recursion loop, modify later.
+            return print("INVALID AC CONFIGURATION - OVERWEIGHT ") #closes recursion loop, modify later to add new part.
+        if (ac_core_weight < 0):
+            invalid_AC = True
+            return print("INVALID AC CONFIGURATION - ARMS OVERWEIGHT ") 
+        if (ac_remaining_energy <0):
+            invalid_AC = True
+            return print("INVALID AC CONFIGURATION - NOT ENOUGH ENERGY ") 
         else:
             invalid_AC = False
     
@@ -74,6 +105,10 @@ def main():
     print(ac_core.name, f"Arm Weight Remaining:", ac_core_weight ) 
     print(ac_arms.name)
     print(ac_generator.name)
+    print(ac_booster.name)
+    print(ac_head.name)
+    print(ac_FCS.name)
+    print(ac_arm_weapon_r.name)
     print(f"Remaining Weight:", ac_remaining_weight, f"Remaining Arm Weight:", ac_core_weight, f"Remaining Energy:", ac_remaining_energy )
     
     return(Valid_AC)
