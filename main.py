@@ -8,6 +8,7 @@ import Arms
 import Boosters
 import FCS
 import Arm_Weapon_R
+import Back_Weapons
 
 
 def shuffle_random_leg ():
@@ -55,10 +56,15 @@ def shuffle_random_arm_weapon_r():
     random_arm_weapon_r = random.choice(Arm_Weapon_R.all_arm_weapon_r)
     return(random_arm_weapon_r)
 
+def shuffle_back_weapon():
+    random_back_weapon = random.choice(Back_Weapons.all_back_weapons) #attempting to set a %chance of a weapon being generated. 
+    return(random_back_weapon)
+
+
 def main():
 
     #Defining each maximum part value
-    Valid_AC = ""
+    Valid_AC = ()
     ac_remaining_weight = 0
     ac_core_weight = 0
     ac_remaining_energy = 0
@@ -72,16 +78,48 @@ def main():
     ac_FCS = shuffle_random_FCS ()
     ac_arm_weapon_r = shuffle_random_arm_weapon_r()
 
+    percentage_chance = 50
+
+
+    
+    if 0 <= percentage_chance <= 100:
+        if random.random() < percentage_chance / 100:
+            ac_back_weapon_l = shuffle_back_weapon()
+
 
 
     ac_remaining_weight = ac_legs.max_weight - ac_core.weight - ac_generator.weight - ac_arms.weight - ac_booster.weight - ac_head.weight - ac_FCS.weight 
     if ac_arms.humanoid_arm == True:
-            - ac_arm_weapon_r.weight
+            ac_remaining_weight -= ac_arm_weapon_r.weight
     else:
         ac_arm_weapon_r.name = "EQUIPMENT IMPOSSIBLE"
 
+    if 0 <= percentage_chance <= 100:
+        ac_back_weapon_r = shuffle_back_weapon()
+        if random.random() < percentage_chance / 100:
+            ac_remaining_weight -= ac_back_weapon_r.weight
+        else:
+            ac_back_weapon_r.name = "NO EQUIP"
+    
+    if 0 <= percentage_chance <= 100:
+        ac_back_weapon_l = shuffle_back_weapon()
+        if random.random() < percentage_chance / 100:
+            ac_remaining_weight -= ac_back_weapon_l.weight
+        else:
+            ac_back_weapon_l.name = "NO EQUIP"
+
+
+    
+
     ac_core_weight = ac_core.max_weight - ac_arms.weight
+    if ac_arms.humanoid_arm == True:
+        ac_core_weight -= ac_arm_weapon_r.weight #- ac_arm_weapon_l.weight
+
     ac_remaining_energy = ac_generator.energy_output - ac_core.energy_drain - ac_legs.energy_drain - ac_arms.energy_drain - ac_booster.energy_drain - ac_head.energy_drain - ac_FCS.energy_drain
+    if ac_back_weapon_r == True:
+        ac_remaining_energy -= ac_back_weapon_r.energy_drain
+    if ac_back_weapon_l == True:
+        ac_remaining_energy -= ac_back_weapon_l.energy_drain
 
     if (ac_remaining_weight < 0 or ac_core_weight < 0 or ac_remaining_energy < 0):
         invalid_AC = True
@@ -109,6 +147,8 @@ def main():
     print(ac_head.name)
     print(ac_FCS.name)
     print(ac_arm_weapon_r.name)
+    print(ac_back_weapon_r.name)
+    print(ac_back_weapon_l.name)
     print(f"Remaining Weight:", ac_remaining_weight, f"Remaining Arm Weight:", ac_core_weight, f"Remaining Energy:", ac_remaining_energy )
     
     return(Valid_AC)
