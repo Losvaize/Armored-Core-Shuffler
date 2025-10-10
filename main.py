@@ -89,36 +89,32 @@ def main():
     percentage_chance = 50
 
 
-    
-    if 0 <= percentage_chance <= 100:
-        if random.random() < percentage_chance / 100:
-            ac_back_weapon_l = shuffle_back_weapon()
 
+    ac_remaining_weight = ac_legs.max_weight - ac_core.weight - ac_generator.weight - ac_arms.weight - ac_booster.weight - ac_head.weight - ac_FCS.weight
 
-
-    ac_remaining_weight = ac_legs.max_weight - ac_core.weight - ac_generator.weight - ac_arms.weight - ac_booster.weight - ac_head.weight - ac_FCS.weight 
-
-    if 0 <= percentage_chance <= 100:
+    if 0 <= percentage_chance <= 100: #Still Generating Weapon names for some reason.
             percentage_chance = 50
             ac_arm_weapon_r = shuffle_random_arm_weapon_r()
     if random.random() < percentage_chance / 100:
         if ac_arms.humanoid_arm == True:
             ac_remaining_weight -= ac_arm_weapon_r.weight
     else:
-        ac_arm_weapon_r.name = "EQUIPMENT IMPOSSIBLE"
+        ac_arm_weapon_r.name == "NO EQUIP" 
 
 
-    if 0 <= percentage_chance <= 100:
-        if ac_arm_weapon_r == False and ac_arms.humanoid_arm == True:
+    if 0 <= percentage_chance <= 100: #still Generating Weapon names when Weapon arms are present.
+        if ac_arms.humanoid_arm == True and ac_arm_weapon_r == False:
             percentage_chance = 100
         ac_arm_weapon_l = shuffle_random_arm_weapon_l()
         if random.random() < percentage_chance / 100:
             ac_remaining_weight -= ac_arm_weapon_l.weight
         else:
-            if ac_arms.humanoid_arm == False:
-                ac_arm_weapon_l.name = "EQUIPMENT IMPOSSIBLE"
             ac_arm_weapon_l.name == "NO EQUIP"
             
+    if ac_arms.humanoid_arm == False:
+        ac_arm_weapon_r.name = "EQUIPMENT IMPOSSIBLE"
+        ac_arm_weapon_l.name = "EQUIPMENT IMPOSSIBLE"
+
 
     if 0 <= percentage_chance <= 100: #if part is generated, minus weight from total weight. 
         ac_back_weapon_r = shuffle_back_weapon()
@@ -170,6 +166,16 @@ def main():
             return print("INVALID AC CONFIGURATION - NOT ENOUGH ENERGY ", ac_remaining_energy) 
         else:
             invalid_AC = False
+
+    #if invalid_AC == True and ac_remaining_weight < 0:
+    #    if ac_arm_weapon_r == True and ac_back_weapon_l == True and ac_back_weapon_r == True:
+    #       invalid_equipment = [ac_arm_weapon_r, ac_back_weapon_l, ac_back_weapon_r]
+    #       random_invalid_item = random.choice(invalid_equipment)
+    #       invalid_equipment.remove(random_invalid_item)
+    #       print(f"removed", random_invalid_item)
+
+
+
     
     print(ac_legs.name, f"Max Weight:", ac_legs.max_weight)
     print(ac_core.name, f"Arm Weight Remaining:", ac_core_weight ) 
