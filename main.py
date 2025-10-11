@@ -92,7 +92,7 @@ def main():
 
     ac_remaining_weight = ac_legs.max_weight - ac_core.weight - ac_generator.weight - ac_arms.weight - ac_booster.weight - ac_head.weight - ac_FCS.weight
 
-    if 0 <= percentage_chance <= 100: #Still Generating Weapon names for some reason.
+    if 0 <= percentage_chance <= 100:
             percentage_chance = 50
             ac_arm_weapon_r = shuffle_random_arm_weapon_r()
     if random.random() < percentage_chance / 100:
@@ -102,7 +102,7 @@ def main():
         ac_arm_weapon_r.name == "NO EQUIP" 
 
 
-    if 0 <= percentage_chance <= 100: #still Generating Weapon names when Weapon arms are present.
+    if 0 <= percentage_chance <= 100:
         if ac_arms.humanoid_arm == True and ac_arm_weapon_r == False:
             percentage_chance = 100
         ac_arm_weapon_l = shuffle_random_arm_weapon_l()
@@ -111,7 +111,7 @@ def main():
         else:
             ac_arm_weapon_l.name == "NO EQUIP"
             
-    if ac_arms.humanoid_arm == False:
+    if ac_arms.humanoid_arm == False: #Flag for Weapon names 
         ac_arm_weapon_r.name = "EQUIPMENT IMPOSSIBLE"
         ac_arm_weapon_l.name = "EQUIPMENT IMPOSSIBLE"
 

@@ -39,7 +39,7 @@ class Head(Part):
                  weight: int, energy_drain: int, armor_point: int,
                  def_shell: int, def_energy: int, computer_type: str, 
                  map_type: str, noise_canceler: str, bio_sensor: str,
-                 radar_function: str, radar_range: int = -1, radar_type: str = ""):
+                 radar_function: str, radar_range: int = -1, radar_type: str = "", tier = int ):
         self.id = _id
         self.name = name
         self.part_type = part_type
@@ -56,19 +56,19 @@ class Head(Part):
         self.radar_function = radar_function
         self.radar_range = radar_range
         self.radar_type = radar_type
+        self.tier = tier # Tier 1 Lowest, Tier 4 Highest
 
-all_heads: typing.Tuple[Head, ...] = (
-    Head(0x00, "HD-01-SRVT", "HEAD UNIT", 26500, 122, 350, 816, 154, 149, "DETAILED", "AREA MEMORY", "NONE", "PROVIDED", "NONE"), #Head unit with built-in bio sensor.
-    Head(0x01, "HD-2002", "HEAD UNIT", 29000, 156, 457, 787, 140, 154, "STANDARD", "AREA MEMORY", "NONE", "NONE", "PROVIDED", 6000, "STANDARD"), #Head unit equipped with radar function.
-    Head(0x02, "HD-X1487", "HEAD UNIT", 19000, 166, 420, 975, 160, 185, "ROUGH", "NO MEMORY", "PROVIDED", "PROVIDED", "NONE"), #Full range of sensors but without the auto-map function.
-    Head(0x03, "HD-REDEYE", "HEAD UNIT", 41100, 146, 538, 840, 148, 151, "DETAILED", "AREA&PLACE NAME", "NONE", "NONE", "PROVIDED", 5980, "STANDARD"), #Equipped with radar and an enhanced auto-map function.
-    Head(0x04, "HS-D-9066", "HEAD UNIT", 43200, 138, 657, 885, 165, 232, "STANDARD", "AREA MEMORY", "NONE", "PROVIDED", "PROVIDED", 6120, "STANDARD"), #Full range of options and good EG shields.
-    Head(0x05, "HD-GRY-NX", "HEAD UNIT", 14700, 232, 218, 1001, 194, 134, "ROUGH", "NO MEMORY", "NONE", "NONE", "NONE"), #Economy Unit with good shields but no optional equipment.
-    Head(0x06, "HD-06-RADAR", "HEAD UNIT", 51800, 145, 875, 741, 109, 194, "STANDARD", "AREA&PLACE NAME", "PROVIDED", "NONE", "PROVIDED", 8120, "STANDARD"), #Equiped with wide-area radar and various options.
-    Head(0x07, "HD-ONE", "HEAD UNIT", 68100, 161, 304, 800, 132, 129, "DETAILED", "AREA MEMORY", "PROVIDED", "PROVIDED", "PROVIDED", 7980, "STANDARD"), #Fully equipped with wide-area radar and all options.
-    Head(0x08, "HD-08-DISH", "HEAD UNIT", 33200, 133, 716, 870, 205, 162, "STANDARD", "AREA&PLACE NAME", "NONE", "NONE", "NONE"), #Equipped with an enhanced auto-map function.
-    Head(0x09, "HD-ZERO", "HEAD UNIT", 22500, 185, 431, 925, 221, 149, "ROUGH", "NO MEMORY", "NONE", "NONE", "PROVIDED", 6300, "STANDARD"), #Equipped with radar functions and enhanced shock protection.
-
+all_heads = (
+    Head(0x00, "HD-01-SRVT", "HEAD UNIT", 26500, 122, 350, 816, 154, 149, "DETAILED", "AREA MEMORY", "NONE", "PROVIDED", "NONE", 1), #Head unit with built-in bio sensor.
+    Head(0x01, "HD-2002", "HEAD UNIT", 29000, 156, 457, 787, 140, 154, "STANDARD", "AREA MEMORY", "NONE", "NONE", "PROVIDED", 6000, "STANDARD", 2), #Head unit equipped with radar function.
+    Head(0x02, "HD-X1487", "HEAD UNIT", 19000, 166, 420, 975, 160, 185, "ROUGH", "NO MEMORY", "PROVIDED", "PROVIDED", "NONE", 1), #Full range of sensors but without the auto-map function.
+    Head(0x03, "HD-REDEYE", "HEAD UNIT", 41100, 146, 538, 840, 148, 151, "DETAILED", "AREA&PLACE NAME", "NONE", "NONE", "PROVIDED", 5980, "STANDARD", 3), #Equipped with radar and an enhanced auto-map function.
+    Head(0x04, "HS-D-9066", "HEAD UNIT", 43200, 138, 657, 885, 165, 232, "STANDARD", "AREA MEMORY", "NONE", "PROVIDED", "PROVIDED", 6120, "STANDARD", 2), #Full range of options and good EG shields.
+    Head(0x05, "HD-GRY-NX", "HEAD UNIT", 14700, 232, 218, 1001, 194, 134, "ROUGH", "NO MEMORY", "NONE", "NONE", "NONE", 1), #Economy Unit with good shields but no optional equipment.
+    Head(0x06, "HD-06-RADAR", "HEAD UNIT", 51800, 145, 875, 741, 109, 194, "STANDARD", "AREA&PLACE NAME", "PROVIDED", "NONE", "PROVIDED", 8120, "STANDARD", 3), #Equiped with wide-area radar and various options.
+    Head(0x07, "HD-ONE", "HEAD UNIT", 68100, 161, 304, 800, 132, 129, "DETAILED", "AREA MEMORY", "PROVIDED", "PROVIDED", "PROVIDED", 7980, "STANDARD", 4), #Fully equipped with wide-area radar and all options.
+    Head(0x08, "HD-08-DISH", "HEAD UNIT", 33200, 133, 716, 870, 205, 162, "STANDARD", "AREA&PLACE NAME", "NONE", "NONE", "NONE", 2), #Equipped with an enhanced auto-map function.
+    Head(0x09, "HD-ZERO", "HEAD UNIT", 22500, 185, 431, 925, 221, 149, "ROUGH", "NO MEMORY", "NONE", "NONE", "PROVIDED", 6300, "STANDARD", 3), #Equipped with radar functions and enhanced shock protection.
 )
 
 class Core(Part):
@@ -82,11 +82,21 @@ class Core(Part):
     anti_missile_angle: int
     extension_slots: int
 
-    def __init__(self, _id: int, name: str, part_type: str, price: int,
-                 weight: int, energy_drain: int, armor_point: int,
-                 def_shell: int, def_energy: int, max_weight: int,
-                 anti_missile_response: int, anti_missile_angle: int,
-                 extension_slots: int):
+    def __init__(self, 
+                 _id: int, 
+                 name: str, 
+                 part_type: str, 
+                 price: int,
+                 weight: int, 
+                 energy_drain: int, 
+                 armor_point: int,
+                 def_shell: int, 
+                 def_energy: int, 
+                 max_weight: int,
+                 anti_missile_response: int, 
+                 anti_missile_angle: int,
+                 extension_slots: int,
+                 tier = int):
         self.id = _id
         self.name = name
         self.part_type = part_type
@@ -100,11 +110,12 @@ class Core(Part):
         self.anti_missile_response = anti_missile_response
         self.anti_missile_angle = anti_missile_angle
         self.extension_slots = extension_slots
+        self.tier = tier # Tier 1 lowest. Tier 4 Highest
 
-all_cores: typing.Tuple[Core, ...] = (
-    Core(0x0A, "XCA-00", "CORE UNIT", 61500, 1103, 1046, 2710, 530, 505, 2770, 48, 48, 8), #Standard core unit with average performance overall.
-    Core(0x0B, "XCL-01", "CORE UNIT", 88000, 885, 1380, 2380, 492, 610, 2450, 45, 64, 16), #Electronic warfare core with many slots for special equipment.
-    Core(0x0C, "XCH-01", "CORE UNIT", 72000, 1384, 873, 3015, 615, 543, 3600, 48, 32, 12), #Heavyweight core with an excellent shoulder load and heavy armor.
+all_cores =(
+    Core(0x0A, "XCA-00", "CORE UNIT", 61500, 1103, 1046, 2710, 530, 505, 2770, 48, 48, 8, 1), #Standard core unit with average performance overall.
+    Core (0x0B, "XCL-01", "CORE UNIT", 88000, 885, 1380, 2380, 492, 610, 2450, 45, 64, 16, 2), #Electronic warfare core with many slots for special equipment.
+    Core (0x0C, "XCH-01", "CORE UNIT", 72000, 1384, 873, 3015, 615, 543, 3600, 48, 32, 12, 2), #Heavyweight core with an excellent shoulder load and heavy armor.
 )
 
 class Arms(Part):
@@ -122,12 +133,27 @@ class Arms(Part):
     maximum_lock: int
     reload_time: int
 
-    def __init__(self, _id: int, name: str, part_type: str, price: int,
-                 weight: int, energy_drain: int, armor_point: int,
-                 def_shell: int, def_energy: int, weapon_lock: str = "",
-                 attack_power: int = -1, number_of_ammo: int = -1,
-                 ammo_type: str = "", ammo_price: int = -1, arms_range: int = -1,
-                 maximum_lock: int = -1, reload_time: int = -1):
+    def __init__(self, 
+                 _id: int, 
+                 name: str, 
+                 part_type: str,
+                 price: int,
+                 weight: int, 
+                 energy_drain: int, 
+                 armor_point: int,
+                 def_shell: int, 
+                 def_energy: int,
+                 tier: int,
+                 humanoid_arm: bool,  
+                 weapon_lock: str = "",
+                 attack_power: int = -1, 
+                 number_of_ammo: int = -1,
+                 ammo_type: str = "", 
+                 ammo_price: int = -1, 
+                 arms_range: int = -1,
+                 maximum_lock: int = -1, 
+                 reload_time: int = -1,
+                 fire_unlocked : bool = -1,):
         self.id = _id
         self.name = name
         self.part_type = part_type
@@ -137,6 +163,8 @@ class Arms(Part):
         self.armor_point = armor_point
         self.def_shell = def_shell
         self.def_energy = def_energy
+        self.tier = tier #Tier 1 is lowest, Tier 4 is highest.
+        self.humanoid_arm = humanoid_arm # Can hold L or R arm weapons. 
         self.weapon_lock = weapon_lock
         self.attack_power = attack_power
         self.number_of_ammo = number_of_ammo
@@ -145,24 +173,25 @@ class Arms(Part):
         self.arms_range = arms_range
         self.maximum_lock = maximum_lock
         self.reload_time = reload_time
+        self.fire_unlocked = fire_unlocked # can fire unlocked, needed for progression.
 
-all_arms: typing.Tuple[Arms, ...] = (
-    Arms(0x0D, "AN-101", "ARM UNIT", 19000, 1228, 1006, 1670, 384, 374), #Normal arm units with average performance.
-    Arms(0x0E, "AN-201", "ARM UNIT", 15300, 1054, 877, 1635, 352, 334), #Low energy consumption version of the AN-101.
-    Arms(0x0F, "AN-K1", "ARM UNIT", 49000, 905, 930, 1790, 337, 402), #Reduced-weight arm units with full AP and shields.
-    Arms(0x10, "AN-D-7001", "ARM UNIT", 23000, 1445, 1512, 1743, 306, 453), #Average arm units with enhanced performance.
-    Arms(0x11, "AN-3001", "ARM UNIT", 39500, 1612, 1258, 1935, 487, 353), #Middleweight arms with maximum energy shielding.
-    Arms(0x12, "ANKS-1A46J", "ARM UNIT", 42100, 2120, 1415, 1990, 679, 496), #Offers the maximum AP but interferes with some parts.
-    Arms(0x13, "AN-863-B", "ARM UNIT", 34000, 1726, 1394, 1880, 517, 406), #Weight is increased for added durability.
-    Arms(0x14, "AN-25", "ARM UNIT", 28400, 853, 682, 1826, 344, 284), #Lightweight type arm units with better performance.
-    Arms(0x15, "AW-MG25/2", "MACHINE GUN", 54500, 1193, 78, 812, 0, 0, "SPECIAL", 158, 400, "SOLID", 33, 8800, 1, 2), #Can strafe with 4 rifles at once
-    Arms(0x16, "AW-GT2000", "GATLING GUN", 48600, 1415, 92, 1132, 0, 0, "SPECIAL", 305, 300, "SOLID", 62, 7800, 1, 2), #Dual Gatling guns can concentrate high-speed rounds at a single point.
-    Arms(0x17, "AW-RF105", "CANNON", 77600, 1530, 106, 1280, 0, 0, "NARROW & DEEP", 1530, 100, "SOLID", 220, 9300, 1, 15), #2 cannons with incredible firepower.
-    Arms(0x18, "AW-30/3", "DUAL MISSILE", 56400, 480, 377, 688, 0, 0, "STANDARD", 830, 80, "SOLID", 130, 9000, 3, 10), #Fires 2 rounds of 3 small missiles for a total of 6 missiles.
-    Arms(0x19, "AW-RF120", "CANNON", 67200, 1827, 137, 1420, 0, 0, "NARROW & DEEP", 2120, 50, "SOLID", 300, 9800, 1, 18), #Enhanced dual cannons. Somewhat fewer shots. 
-    Arms(0x1A, "AW-S60/2", "DUAL MISSILE", 66600, 762, 420, 725, 0, 0, "STANDARD", 830, 120, "SOLID", 130, 9000, 2, 10), #Fires 2 rounds of 2 missiles at once for extra shots.
-    Arms(0x1B, "AW-XC5500", "PLASMA CANNON", 83600, 1688, 547, 875, 0, 0, "NARROW & DEEP", 1241, 70, "ENERGY", 0, 12000, 1, 7), #Energy weapon. Fires twin bursts of light.
-    Arms(0x1C, "AW-XC65", "LASER CANNON", 98500, 1905, 625, 792, 0, 0, "NARROW & DEEP", 2322, 40, "ENERGY", 0, 8300, 1, 10) #Energy Weapon. Fires two beams. 
+all_arms= (
+    Arms(0x0D, "AN-101", "ARM UNIT", 19000, 1228, 1006, 1670, 384, 374, 1, True), #Normal arm units with average performance.
+    Arms(0x0E, "AN-201", "ARM UNIT", 15300, 1054, 877, 1635, 352, 334, 1, True), #Low energy consumption version of the AN-101.
+    Arms(0x0F, "AN-K1", "ARM UNIT", 49000, 905, 930, 1790, 337, 402, 3, True), #Reduced-weight arm units with full AP and shields.
+    Arms(0x10, "AN-D-7001", "ARM UNIT", 23000, 1445, 1512, 1743, 306, 453, 1, True), #Average arm units with enhanced performance.
+    Arms(0x11, "AN-3001", "ARM UNIT", 39500, 1612, 1258, 1935, 487, 353, 2, True), #Middleweight arms with maximum energy shielding.
+    Arms(0x12, "ANKS-1A46J", "ARM UNIT", 42100, 2120, 1415, 1990, 679, 496, 3, True), #Offers the maximum AP but interferes with some parts.
+    Arms(0x13, "AN-863-B", "ARM UNIT", 34000, 1726, 1394, 1880, 517, 406, 2, True), #Weight is increased for added durability.
+    Arms(0x14, "AN-25", "ARM UNIT", 28400, 853, 682, 1826, 344, 284, 3, True), #Lightweight type arm units with better performance.
+    Arms(0x15, "AW-MG25/2", "MACHINE GUN", 54500, 1193, 78, 812, 0, 0, 1, False,  "SPECIAL", 158, 400, "SOLID", 33, 8800, 1, 2, True), #Can strafe with 4 rifles at once
+    Arms(0x16, "AW-GT2000", "GATLING GUN", 48600, 1415, 92, 1132, 0, 0, 2, False, "SPECIAL", 305, 300, "SOLID", 62, 7800, 1, 2, True), #Dual Gatling guns can concentrate high-speed rounds at a single point.
+    Arms(0x17, "AW-RF105", "CANNON", 77600, 1530, 106, 1280, 0, 0, 3, False, "NARROW & DEEP", 1530, 100, "SOLID", 220, 9300, 1, 15, True), #2 cannons with incredible firepower.
+    Arms(0x18, "AW-30/3", "DUAL MISSILE", 56400, 480, 377, 688, 0, 0, 2, False, "STANDARD", 830, 80, "SOLID", 130, 9000, 3, 10, False), #Fires 2 rounds of 3 small missiles for a total of 6 missiles.
+    Arms(0x19, "AW-RF120", "CANNON", 67200, 1827, 137, 1420, 0, 0, 3, False, "NARROW & DEEP", 2120, 50, "SOLID", 300, 9800, 1, 18, True), #Enhanced dual cannons. Somewhat fewer shots. 
+    Arms(0x1A, "AW-S60/2", "DUAL MISSILE", 66600, 762, 420, 725, 0, 0, 3, False, "STANDARD", 830, 120, "SOLID", 130, 9000, 2, 10, False), #Fires 2 rounds of 2 missiles at once for extra shots.
+    Arms(0x1B, "AW-XC5500", "PLASMA CANNON", 83600, 1688, 547, 875, 0, 0, 4, False, "NARROW & DEEP", 1241, 70, "ENERGY", 0, 12000, 1, 7, True), #Energy weapon. Fires twin bursts of light.
+    Arms(0x1C, "AW-XC65", "LASER CANNON", 98500, 1905, 625, 792, 0, 0, 4, False, "NARROW & DEEP", 2322, 40, "ENERGY", 0, 8300, 1, 10, True) #Energy Weapon. Fires two beams. 
 )
  
 class Legs(Part):
@@ -176,11 +205,23 @@ class Legs(Part):
     stability: int
     jump_function: str
 
-    def __init__(self, _id: int, name: str, part_type: str, price: int,
-                 weight: int, energy_drain: int, armor_point: int,
-                 def_shell: int, def_energy: int, max_weight: int,
-                 speed: int, stability: int, jump_function: str):
-        self.id = _id
+    def __init__ (self,
+                  _id: int,
+                  name: str, 
+                  part_type: str, 
+                  price: int, 
+                  weight: int, 
+                  energy_drain: int, 
+                  armor_point: int, 
+                  def_shell: int, 
+                  def_energy: int, 
+                  max_weight: int, 
+                  speed: int,
+                  stability: int, 
+                  jump_function: str,
+                  tier: int):
+        
+        self.id = id
         self.name = name
         self.part_type = part_type
         self.price = price
@@ -193,41 +234,42 @@ class Legs(Part):
         self.speed = speed
         self.stability = stability
         self.jump_function = jump_function
+        self.tier = tier # Tier 1 lowest. Tier 4 Highest
 
-all_legs: typing.Tuple[Legs, ...] = (
-    Legs(0x1D, "LN-1001", "HUMANOID LEGS", 28500, 1966, 1725, 3235, 556, 531, 4470, 277, 1018, "PROVIDED"), #Balanced, standard humanoid legs.
-    Legs(0x1E, "LN-SSVT", "HUMANOID LEGS", 44000, 1528, 2338, 2795, 482, 507, 3560, 445, 596, "PROVIDED"), #Light, fast humanoid legs but with low load capacity and AP.
-    Legs(0x1F, "LN-3001", "HUMANOID LEGS", 52200, 3137, 2206, 3703, 870, 594, 6600, 153, 2518, "PROVIDED"), #Heavily armored humanoid legs with high load capacity. Poor speed. 
-    Legs(0x20, "LN-1001-PX-0", "HUMANOID LEGS", 25000, 1892, 1844, 3035, 528, 508, 4100, 280, 904, "PROVIDED"), #Balanced humanoid legs for combat on all terrain.
-    Legs(0x21, "LN-501", "HUMANOID LEGS", 71800, 1675, 2910, 2947, 508, 535, 3990, 451, 854, "PROVIDED"), #Has the shield performance and load capacity of a middleweight.
-    Legs(0x22, "LN-SSVR", "HUMANOID LEGS", 32400, 2750, 2013, 3606, 805, 532, 5400, 148, 2150, "PROVIDED"), #Lightest of the heavily armored humanoid legs.
-    Legs(0x23, "LN-1001B", "HUMANOID LEGS", 45200, 2305, 1889, 3383, 585, 543, 4630, 272, 1320, "PROVIDED"), #Enhanced variation of the LN-1001.
-    Legs(0x24, "DUMMY1", "DUMMY PARTS", 0, 0, 0, 0, 0, 0, 0, 0, 0, "NONE"), #
-    Legs(0x25, "LN-3001C", "HUMANOID LEGS", 64100, 3528, 2418, 3977, 889, 602, 7100, 151, 2977, "PROVIDED"), #Best AP and shields among the humanoid legs.
-    Legs(0x26, "DUMMY2", "DUMMY PARTS", 0, 0, 0, 0, 0, 0, 0, 0, 0, "NONE"), #
-    Legs(0x27, "LN-502", "HUMANOID LEGS", 35800, 1790, 2466, 3343, 538, 592, 3800, 275, 843, "PROVIDED"), #This middleweight has reduced weight without sacrificing performance.
-    Legs(0x28, "LN-D-8000R", "HUMANOID LEGS", 49000, 2426, 2350, 3532, 510, 656, 4720, 269, 1200, "PROVIDED"), #Humanoid legs with special anti-energy weapon armor.
-    Legs(0x29, "DUMMY3", "DUMMY PARTS", 0, 0, 0, 0, 0, 0, 0, 0, 0, "NONE"), #
-    Legs(0x2A, "LNKS-1B46J", "HUMANOID LEGS", 48000, 3065, 2304, 3788, 822, 618, 6100, 146, 3802, "PROVIDED"), #Shock absorbing structure reduces recoil from shell hits.
-    Legs(0x2B, "LB-4400", "REVERSE JOINT", 17300, 2520, 1400, 3560, 617, 451, 4020, 294, 2084, "PROVIDED"), #Standard reverse joint type. Good maneuverability and inexpensive. 
-    Legs(0x2C, "DUMMY4", "DUMMY PARTS", 0, 0, 0, 0, 0, 0, 0, 0, 0, "NONE"), #
-    Legs(0x2D, "LB-4401", "REVERSE JOINT", 31800, 2910, 1456, 3810, 672, 468, 4510, 287, 2713, "PROVIDED"), #Best overall performance of the reverse joint types.
-    Legs(0x2E, "LB-4303", "REVERSE JOINT", 24000, 2647, 1585, 3575, 643, 488, 4180, 291, 2505, "PROVIDED"), #Increased ground contact area for enhanced shock absorbing capacity.
-    Legs(0x2F, "LB-1000-P", "REVERSE JOINT", 20500, 2095, 1228, 3514, 609, 444, 3775, 286, 2310, "PROVIDED"), #Phenomenal maneuverability but low load carrying capacity.
-    Legs(0x30, "LBKS-2B45A", "REVERSE JOINT", 27000, 2480, 1703, 3731, 584, 515, 3990, 299, 1985, "PROVIDED"), #Deluxe type with enhanced shielding against energy weapons.
-    Legs(0x31, "DUMMY5", "DUMMY PARTS", 0, 0, 0, 0, 0, 0, 0, 0, 0, "NONE"), #
-    Legs(0x32, "LF-205-SF", "FOUR LEGS TYPE", 42600, 2137, 2810, 2841, 446, 654, 3450, 483, 580, "PROVIDED"), #Standard four-leg type. Top-class maneuverability. 
-    Legs(0x33, "LFH-X3", "FOUR LEGS TYPE", 56000, 2400, 2988, 3100, 468, 610, 3810, 421, 710, "PROVIDED"), #Energy gauge recovers quickly when halted.
-    Legs(0x34, "LF-DEX-1", "FOUR LEGS TYPE", 69000, 2650, 4016, 3179, 557, 553, 4450, 360, 820, "PROVIDED"), #Increased load carrying capacity requires vast amounts of power.
-    Legs(0x35, "DUMMY6", "DUMMY PARTS", 0, 0, 0, 0, 0, 0, 0, 0, 0, "NONE"), #
-    Legs(0x36, "DUMMY7", "DUMMY PARTS", 0, 0, 0, 0, 0, 0, 0, 0, 0, "NONE"), #
-    Legs(0x37, "LFH-X5X", "FOUR LEGS TYPE", 82000, 2880, 3584, 3328, 497, 700, 5000, 442, 1110, "PROVIDED"), #New four-leg type pushes the specs to the limit.
-    Legs(0x38, "LC-MOS18", "CATERPILLAR", 16000, 4182, 978, 3928, 858, 572, 8000, 105, 4245, "NONE"), #Maximum load carrying capacity but poor speed and weight. 
-    Legs(0x39, "LC-UKI60", "CATERPILLAR", 25500, 3860, 1104, 3822, 812, 589, 6950, 138, 3710, "NONE"), #Economy wheeled truck type with finely adjusted performance. 
-    Legs(0x3A, "DUMMY8", "DUMMY PARTS", 0, 0, 0, 0, 0, 0, 0, 0, 0, "NONE"), #
-    Legs(0x3B, "LC-HTP-AAA", "CATERPILLAR", 38500, 2915, 2877, 3688, 728, 694, 4130, 250, 630, "NONE"), #Has performance near that of a four-legged type.
-    Legs(0x3C, "LC-MOS4545", "CATERPILLAR", 59000, 3610, 2609, 3990, 905, 753, 7400, 211, 5101, "NONE") #A dreadfully durable monster machine.
-)
+all_legs = (
+    Legs(0x1D, "LN-1001", "HUMANOID LEGS", 28500, 1966, 1725, 3235, 556, 531, 4470, 277, 1018, "PROVIDED", 1), #Balanced, standard humanoid legs.
+	Legs(0x1E, "LN-SSVT", "HUMANOID LEGS", 44000, 1528, 2338, 2795, 482, 507, 3560, 445, 596, "PROVIDED", 2), #Light, fast humanoid legs but with low load capacity and AP.
+	Legs(0x1F, "LN-3001", "HUMANOID LEGS", 52200, 3137, 2206, 3703, 870, 594, 6600, 153, 2518, "PROVIDED", 2), #Heavily armored humanoid legs with high load capacity. Poor speed. 
+	Legs(0x20, "LN-1001-PX-0", "HUMANOID LEGS", 25000, 1892, 1844, 3035, 528, 508, 4100, 280, 904, "PROVIDED", 1), #Balanced humanoid legs for combat on all terrain.
+	Legs(0x21, "LN-501", "HUMANOID LEGS", 71800, 1675, 2910, 2947, 508, 535, 3990, 451, 854, "PROVIDED", 3), #Has the shield performance and load capacity of a middleweight.
+	Legs(0x22, "LN-SSVR", "HUMANOID LEGS", 32400, 2750, 2013, 3606, 805, 532, 5400, 148, 2150, "PROVIDED", 1), #Lightest of the heavily armored humanoid legs.
+	Legs(0x23, "LN-1001B", "HUMANOID LEGS", 45200, 2305, 1889, 3383, 585, 543, 4630, 272, 1320, "PROVIDED", 3), #Enhanced variation of the LN-1001.
+	Legs(0x24, "DUMMY", "DUMMY PARTS", 0, 0, 0, 0, 0, 0, 0, 0, 0, "NONE", 5), #
+	Legs(0x25, "LN-3001C", "HUMANOID LEGS", 64100, 3528, 2418, 3977, 889, 602, 7100, 151, 2977, "PROVIDED", 3), #Best AP and shields among the humanoid legs.
+	Legs(0x26, "DUMMY", "DUMMY PARTS", 0, 0, 0, 0, 0, 0, 0, 0, 0, "NONE", 5), #
+	Legs(0x27, "LN-502", "HUMANOID LEGS", 35800, 1790, 2466, 3343, 538, 592, 3800, 275, 843, "PROVIDED", 3), #This middleweight has reduced weight without sacrificing performance.
+	Legs(0x28, "LN-D-8000R", "HUMANOID LEGS", 49000, 2426, 2350, 3532, 510, 656, 4720, 269, 1200, "PROVIDED", 2), #Humanoid legs with special anti-energy weapon armor.
+	Legs(0x29, "DUMMY", "DUMMY PARTS", 0, 0, 0, 0, 0, 0, 0, 0, 0, "NONE", 5), #
+	Legs(0x2A, "LNKS-1B46J", "HUMANOID LEGS", 48000, 3065, 2304, 3788, 822, 618, 6100, 146, 3802, "PROVIDED", 2), #Shock absorbing structure reduces recoil from shell hits.
+	Legs(0x2B, "LB-4400", "REVERSE JOINT", 17300, 2520, 1400, 3560, 617, 451, 4020, 294, 2084, "PROVIDED", 1), #Standard reverse joint type. Good maneuverability and inexpensive. 
+	Legs(0x2C, "DUMMY", "DUMMY PARTS", 0, 0, 0, 0, 0, 0, 0, 0, 0, "NONE", 5), #
+	Legs(0x2D, "LB-4401", "REVERSE JOINT", 31800, 2910, 1456, 3810, 672, 468, 4510, 287, 2713, "PROVIDED", 2), #Best overall performance of the reverse joint types.
+	Legs(0x2E, "LB-4303", "REVERSE JOINT", 24000, 2647, 1585, 3575, 643, 488, 4180, 291, 2505, "PROVIDED", 1), #Increased ground contact area for enhanced shock absorbing capacity.
+	Legs(0x2F, "LB-1000-P", "REVERSE JOINT", 20500, 2095, 1228, 3514, 609, 444, 3775, 286, 2310, "PROVIDED", 1), #Phenomenal maneuverability but low load carrying capacity.
+	Legs(0x30, "LBKS-2B45A", "REVERSE JOINT", 27000, 2480, 1703, 3731, 584, 515, 3990, 299, 1985, "PROVIDED", 2), #Deluxe type with enhanced shielding against energy weapons.
+	Legs(0x31, "DUMMY", "DUMMY PARTS", 0, 0, 0, 0, 0, 0, 0, 0, 0, "NONE", 5), #
+	Legs(0x32, "LF-205-SF", "FOUR LEGS TYPE", 42600, 2137, 2810, 2841, 446, 654, 3450, 483, 580, "PROVIDED", 2), #Standard four-leg type. Top-class maneuverability. 
+	Legs(0x33, "LFH-X3", "FOUR LEGS TYPE", 56000, 2400, 2988, 3100, 468, 610, 3810, 421, 710, "PROVIDED", 3), #Energy gauge recovers quickly when halted.
+	Legs(0x34, "LF-DEX-1", "FOUR LEGS TYPE", 69000, 2650, 4016, 3179, 557, 553, 4450, 360, 820, "PROVIDED", 3), #Increased load carrying capacity requires vast amounts of power.
+	Legs(0x35, "DUMMY", "DUMMY PARTS", 0, 0, 0, 0, 0, 0, 0, 0, 0, "NONE", 5), #
+	Legs(0x36, "DUMMY", "DUMMY PARTS", 0, 0, 0, 0, 0, 0, 0, 0, 0, "NONE", 5), #
+	Legs(0x37, "LFH-X5X", "FOUR LEGS TYPE", 82000, 2880, 3584, 3328, 497, 700, 5000, 442, 1110, "PROVIDED", 4), #New four-leg type pushes the specs to the limit.
+	Legs(0x38, "LC-MOS18", "CATERPILLAR", 16000, 4182, 978, 3928, 858, 572, 8000, 105, 4245, "NONE", 1), #Maximum load carrying capacity but poor speed and weight. 
+	Legs(0x39, "LC-UKI60", "CATERPILLAR", 25500, 3860, 1104, 3822, 812, 589, 6950, 138, 3710, "NONE", 1), #Economy wheeled truck type with finely adjusted performance. 
+	Legs(0x3A, "DUMMY", "DUMMY PARTS", 0, 0, 0, 0, 0, 0, 0, 0, 0, "NONE", 5), #
+	Legs(0x3B, "LC-HTP-AAA", "CATERPILLAR", 38500, 2915, 2877, 3688, 728, 694, 4130, 250, 630, "NONE", 2), #Has performance near that of a four-legged type.
+	Legs(0x3C, "LC-MOS4545", "CATERPILLAR", 59000, 3610, 2609, 3990, 905, 753, 7400, 211, 5101, "NONE", 3), #A dreadfully durable monster machine.
+	)  
 
 class Generator(Part):
     weight: int
@@ -235,9 +277,16 @@ class Generator(Part):
     maximum_charge: int
     charge_redzone: int
 
-    def __init__(self, _id: int, name: str, part_type: str, price: int,
-                 weight: int, energy_output: int, maximum_charge: int,
-                 charge_redzone: int):
+    def __init__(self, 
+                 _id: int, 
+                 name: str, 
+                 part_type:str, 
+                 price: int,
+                 weight: int, 
+                 energy_output: int, 
+                 maximum_charge: int,
+                 charge_redzone: int,
+                 tier: int):
         self.id = _id
         self.name = name
         self.part_type = part_type
@@ -246,16 +295,17 @@ class Generator(Part):
         self.energy_output = energy_output
         self.maximum_charge = maximum_charge
         self.charge_redzone = charge_redzone
+        self.tier = tier # Tier 1 lowest. Tier 4 Highest
 
-all_generators: typing.Tuple[Generator, ...] = (
-    Generator(0x3D, "GPS-VVA", "PULSE GENERATOR", 19500, 308, 4728, 28000, 7800), #Low in both power and capacity. Wide red zone.
-    Generator(0x3E, "GPS-V6", "PULSE GENERATOR", 32000, 363, 4728, 43000, 5000), #Load increased to nearly twice that of the GPS-VVA.
-    Generator(0x3F, "GRD-RX5", "PULSE GENERATOR", 23300, 225, 5300, 38000, 4000), #Balanced-performance generator.
-    Generator(0x40, "GRD-RX6", "PULSE GENERATOR", 27800, 286, 6000, 33000, 4000), #Performance not bad, but the equipment is so-so.
-    Generator(0x41, "GRD-RX7", "PULSE GENERATOR", 38700, 348, 6810, 31500, 5000), #Very good power but poor stamina.
-    Generator(0x42, "GBG-10000", "PULSE GENERATOR", 43500, 398, 9988, 34000, 2980), #High Power provides a wide selection of equipment.
-    Generator(0x43, "GBG-XR", "PULSE GENERATOR", 56000, 452, 8207, 48000, 3250) #Custom-made unit having both power and capacity.
-)
+all_generators = (
+    Generator(0x3D, "GPS-VVA", "PULSE GENERATOR", 19500, 308, 4728, 28000, 7800, 1), #Low in both power and capacity. Wide red zone.
+	Generator(0x3E, "GPS-V6", "PULSE GENERATOR", 32000, 363, 4728, 43000, 5000, 1), #Load increased to nearly twice that of the GPS-VVA.
+	Generator(0x3F, "GRD-RX5", "PULSE GENERATOR", 23300, 225, 5300, 38000, 4000, 1), #Balanced-performance generator.
+	Generator(0x40, "GRD-RX6", "PULSE GENERATOR", 27800, 286, 6000, 33000, 4000, 1), #Performance not bad, but the equipment is so-so.
+	Generator(0x41, "GRD-RX7", "PULSE GENERATOR", 38700, 348, 6810, 31500, 5000, 2), #Very good power but poor stamina.
+	Generator(0x42, "GBG-10000", "PULSE GENERATOR", 43500, 398, 9988, 34000, 2980, 3), #High Power provides a wide selection of equipment.
+	Generator(0x43, "GBG-XR", "PULSE GENERATOR", 56000, 452, 8207, 48000, 3250, 3), #Custom-made unit having both power and capacity.
+    )
 
 class FCS(Part):
     weight: int
@@ -265,7 +315,7 @@ class FCS(Part):
 
     def __init__(self, _id: int, name: str, part_type: str, price: int,
                  weight: int, energy_drain: int, maximum_lock: int,
-                 lock_type: str):
+                 lock_type: str, tier: int):
         self.id = _id
         self.name = name
         self.part_type = part_type
@@ -274,18 +324,18 @@ class FCS(Part):
         self.energy_drain = energy_drain
         self.maximum_lock = maximum_lock
         self.lock_type = lock_type
+        self.tier = tier
 
-all_fcs: typing.Tuple[FCS, ...] = (
-    FCS(0x44, "COMDEX-C7", "FCS", 11100, 14, 24, 4, "STANDARD"), #Maximum of 4 lock-ons, average performance
-    FCS(0x45, "COMDEX-G0", "FCS", 22500, 14, 24, 4, "STANDARD"), #Maximum of 4 lock-ons, fast lock-on.
-    FCS(0x46, "COMDEX-G8", "FCS", 16400, 14, 24, 6, "STANDARD"), #Maximum of 6 lock-ons, long-distance lock-on.
-    FCS(0x47, "QX-21", "FCS", 20300, 8, 12, 1, "WIDE & SHALLOW"), #Maximum of 1 lock-on, short lock over a wide area. 
-    FCS(0x48, "QX-AF", "FCS", 35700, 10, 16, 2, "WIDE & SHALLOW"), #Maximum of 2 lock-ons, short lock. 
-    FCS(0x49, "TRYX-BOXER", "FCS", 48100, 10, 19, 3, "TALL"), #Maximum of 3 lock-ons, vertical sight. 
-    FCS(0x4A, "TRYX-QUAD", "FCS", 63000, 18, 38, 6, "WIDE"), #Maximum of 6 lock-ons, horizontal sight.
-    FCS(0x4B, "QX-9009", "FCS", 96000, 24, 55, 6, "NARROW & DEEP") #Maximum of 6 lock-ons, longest lock distance.  
+all_fcs =(
+    FCS(0x44, "COMDEX-C7", "FCS", 11100, 14, 24, 4, "STANDARD", 1), #Maximum of 4 lock-ons, average performance
+    FCS(0x45, "COMDEX-G0", "FCS", 22500, 14, 24, 4, "STANDARD", 1), #Maximum of 4 lock-ons, fast lock-on.
+    FCS(0x46, "COMDEX-G8", "FCS", 16400, 14, 24, 6, "STANDARD", 1), #Maximum of 6 lock-ons, long-distance lock-on.
+    FCS(0x47, "QX-21", "FCS", 20300, 8, 12, 1, "WIDE & SHALLOW", 1), #Maximum of 1 lock-on, short lock over a wide area. 
+    FCS(0x48, "QX-AF", "FCS", 35700, 10, 16, 2, "WIDE & SHALLOW", 1), #Maximum of 2 lock-ons, short lock. 
+    FCS(0x49, "TRYX-BOXER", "FCS", 48100, 10, 19, 3, "TALL", 3), #Maximum of 3 lock-ons, vertical sight. 
+    FCS(0x4A, "TRYX-QUAD", "FCS", 63000, 18, 38, 6, "WIDE", 3), #Maximum of 6 lock-ons, horizontal sight.
+    FCS(0x4B, "QX-9009", "FCS", 96000, 24, 55, 6, "NARROW & DEEP", 3) #Maximum of 6 lock-ons, longest lock distance.  
 )
-
 
 class Option_Part(Part):
     slot_spend: int
@@ -319,9 +369,17 @@ class Booster(Part):
     boost_power: int
     charge_drain: int
 
-    def __init__(self, _id: int, name: str, part_type: str, price: int,
-                 weight: int, energy_drain: int, boost_power: int,
-                 charge_drain: int):
+    def __init__(self, 
+                 _id: int, 
+                 name: str, 
+                 part_type: str, 
+                 price: int,
+                 weight: int, 
+                 energy_drain: int, 
+                 boost_power: int,
+                 charge_drain: int,
+                 tier:int):
+        
         self.id = _id
         self.name = name
         self.part_type = part_type
@@ -330,14 +388,15 @@ class Booster(Part):
         self.energy_drain = energy_drain
         self.boost_power = boost_power
         self.charge_drain = charge_drain
+        self.tier = tier # Tier 1 lowest. Tier 4 Highest
 
-all_boosters: typing.Tuple[Booster, ...] = (
-    Booster(0x57, "B-P320", "BOOST UNIT", 10800, 208, 28, 9800, 4360), #Low priced but seems a bit underpowered.
-    Booster(0x58, "B-P350", "BOOST UNIT", 13700, 162, 33, 12800, 4410), #Economy type with high power but high energy consumption.
-    Booster(0x59, "B-T001", "BOOST UNIT", 34000, 149, 30, 17300, 4600), #Achieves both enhanced power and low weight at the same time.
-    Booster(0x5A, "B-T2", "BOOST UNIT", 31500, 235, 38, 14800, 3850), #Power itself is low but offers the highest efficiency.
-    Booster(0x5B, "B-P351", "BOOST UNIT", 25500, 288, 41, 21000, 6980), #High-Performance model with both high power and energy consumption.
-    Booster(0x5C, "B-VR-33", "BOOST UNIT", 48500, 255, 35, 19000, 5070) #Maintains the top-class power to achieve good efficiency.
+all_boosters = (
+    Booster(0x57, "B-P320", "BOOST UNIT", 10800, 208, 28, 9800, 4360, 1), #Low priced but seems a bit underpowered.
+    Booster(0x58, "B-P350", "BOOST UNIT", 13700, 162, 33, 12800, 4410, 1), #Economy type with high power but high energy consumption.
+    Booster(0x59, "B-T001", "BOOST UNIT", 34000, 149, 30, 17300, 4600, 2), #Achieves both enhanced power and low weight at the same time.
+    Booster(0x5A, "B-T2", "BOOST UNIT", 31500, 235, 38, 14800, 3850, 2), #Power itself is low but offers the highest efficiency.
+    Booster(0x5B, "B-P351", "BOOST UNIT", 25500, 288, 41, 21000, 6980, 2), #High-Performance model with both high power and energy consumption.
+    Booster(0x5C, "B-VR-33", "BOOST UNIT", 48500, 255, 35, 19000, 5070, 3) #Maintains the top-class power to achieve good efficiency.
 )
 
 class Back_Weapon(Part):
@@ -468,9 +527,16 @@ class Arm_Weapon_L(Part): #laserblades
     charge_drain: int
     attack_power: int
 
-    def __init__(self, _id: int, name: str, part_type: str, price: int,
-                 weight: int, energy_drain: int, charge_drain: int,
-                 attack_power: int):
+    def __init__(self, 
+                 _id: int, 
+                 name: str, 
+                 part_type: str, 
+                 price: int,
+                 weight: int, 
+                 energy_drain: int, 
+                 charge_drain: int,
+                 attack_power: int,
+                 tier: int): #1 is Lowest 4 highest.
         self.id = _id
         self.name = name
         self.part_type = part_type
@@ -479,12 +545,13 @@ class Arm_Weapon_L(Part): #laserblades
         self.energy_drain = energy_drain
         self.charge_drain = charge_drain
         self.attack_power = attack_power
+        self.tier = tier
 
-all_arm_weapon_ls: typing.Tuple[Arm_Weapon_L, ...] = (
-    Arm_Weapon_L(0x8F, "LS-2001", "LASERBLADE", 11500, 123, 28, 2050, 738), #Infinitely reusable laser blade.
-    Arm_Weapon_L(0x90, "LS-200G", "LASERBLADE", 29000, 181, 45, 1700, 950), #Powerful weapon exclusively for close-in combat.
-    Arm_Weapon_L(0x91, "LS-3303", "LASERBLADE", 37200, 224, 43, 2630, 1210), #Enhanced blade weapon. Both power and energy consumption are higher.
-    Arm_Weapon_L(0x92, "LS-99-MOONLIGHT", "LASERBLADE", 54000, 336, 93, 810, 2801) #Blade weapon with more than twice the power of conventional blades.
+all_arm_weapon_l = (
+    Arm_Weapon_L(0x8F, "LS-2001", "LASERBLADE", 11500, 123, 28, 2050, 738, 1), #Infinitely reusable laser blade.
+    Arm_Weapon_L(0x90, "LS-200G", "LASERBLADE", 29000, 181, 45, 1700, 950, 1), #Powerful weapon exclusively for close-in combat.
+    Arm_Weapon_L(0x91, "LS-3303", "LASERBLADE", 37200, 224, 43, 2630, 1210, 2), #Enhanced blade weapon. Both power and energy consumption are higher.
+    Arm_Weapon_L(0x92, "LS-99-MOONLIGHT", "LASERBLADE", 54000, 336, 93, 810, 2801, 3) #Blade weapon with more than twice the power of conventional blades.
 )
 
 
