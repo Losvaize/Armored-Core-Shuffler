@@ -125,6 +125,11 @@ all_cores =(
     Core (0x0C, "XCH-01", "CORE UNIT", 72000, 1384, 873, 3015, 615, 543, 3600, 48, 32, 12, 2), #Heavyweight core with an excellent shoulder load and heavy armor.
 )
 
+Cores_by_tier = {
+    1: [Cores for Cores in all_cores if Cores.tier == 1],
+    2: [Cores for Cores in all_cores if Cores.tier == 2]
+}
+
 class Arms(Part):
     weight: int
     energy_drain: int
@@ -200,6 +205,12 @@ all_arms= (
     Arms(0x1B, "AW-XC5500", "PLASMA CANNON", 83600, 1688, 547, 875, 0, 0, 4, False, "NARROW & DEEP", 1241, 70, "ENERGY", 0, 12000, 1, 7, True), #Energy weapon. Fires twin bursts of light.
     Arms(0x1C, "AW-XC65", "LASER CANNON", 98500, 1905, 625, 792, 0, 0, 4, False, "NARROW & DEEP", 2322, 40, "ENERGY", 0, 8300, 1, 10, True) #Energy Weapon. Fires two beams. 
 )
+Arms_by_tier = {
+    1: [Arms for Arms in all_arms if Arms.tier == 1],
+    2: [Arms for Arms in all_arms if Arms.tier == 2],
+    3: [Arms for Arms in all_arms if Arms.tier == 3],
+    4: [Arms for Arms in all_arms if Arms.tier == 4]
+}
  
 class Legs(Part):
     weight: int
@@ -356,7 +367,11 @@ all_fcs =(
     FCS(0x4A, "TRYX-QUAD", "FCS", 63000, 18, 38, 6, "WIDE", 3), #Maximum of 6 lock-ons, horizontal sight.
     FCS(0x4B, "QX-9009", "FCS", 96000, 24, 55, 6, "NARROW & DEEP", 3) #Maximum of 6 lock-ons, longest lock distance.  
 )
-
+FCS_by_tier = {
+    1: [FC for FC in all_fcs if FC.tier == 1],
+    2: [FC for FC in all_fcs if FC.tier == 2],
+    3: [FC for FC in all_fcs if FC.tier == 3],
+}
 class Option_Part(Part):
     slot_spend: int
 
@@ -418,6 +433,11 @@ all_boosters = (
     Booster(0x5B, "B-P351", "BOOST UNIT", 25500, 288, 41, 21000, 6980, 2), #High-Performance model with both high power and energy consumption.
     Booster(0x5C, "B-VR-33", "BOOST UNIT", 48500, 255, 35, 19000, 5070, 3) #Maintains the top-class power to achieve good efficiency.
 )
+Booster_by_tier = {
+    1: [Boost for Boost in all_boosters if Boost.tier == 1],
+    2: [Boost for Boost in all_boosters if Boost.tier == 2],
+    3: [Boost for Boost in all_boosters if Boost.tier == 3],
+}
 
 class Back_Weapon(Part):
     weight: int
@@ -505,6 +525,14 @@ all_back_weapons = (
     Back_Weapon(0x7E, "XCS-9900", "MULTI MISSILE", 94500, 1480, 310, "NONE", "STANDARD", 980, 20, "SOLID", 1125, 12000, 1, 15, False, 3) #Fires 2 multi-warhead missiles simultaneously.
 ) 
 
+Back_Weapon_by_tier = {
+    1: [Back_Weapon for Back_Weapon in all_back_weapons if Back_Weapon.tier == 1],
+    2: [Back_Weapon for Back_Weapon in all_back_weapons if Back_Weapon.tier == 2],
+    3: [Back_Weapon for Back_Weapon in all_back_weapons if Back_Weapon.tier == 3],
+    4: [Back_Weapon for Back_Weapon in all_back_weapons if Back_Weapon.tier == 4],
+}
+
+
 class Arm_Weapon_R(Part): #guns
     weight: int
     energy_drain: int
@@ -567,7 +595,12 @@ all_arm_weapon_r = (
     Arm_Weapon_R(0x8D, "WG-XC4", "LASER RIFLE", 51000, 686, 308, "SPECIAL", 820, 100, "ENERGY", 0, 8000, 1, 10, 3), #Energy weapon. High firepower and energy consumption.
     Arm_Weapon_R(0x8E, "WG-1-KARASAWA", "LASER RIFLE", 75000, 1000, 422, "SPECIAL", 1550, 50, "ENERGY", 0, 10000, 1, 8, 4) #Energy Weapon. Powerful but heavy.
 )
-
+Arm_Weapon_R_by_tier = {
+    1: [Arm_Weapon_R for Arm_Weapon_R in all_arm_weapon_r if Arm_Weapon_R.tier == 1],
+    2: [Arm_Weapon_R for Arm_Weapon_R in all_arm_weapon_r if Arm_Weapon_R.tier == 2],
+    3: [Arm_Weapon_R for Arm_Weapon_R in all_arm_weapon_r if Arm_Weapon_R.tier == 3],
+    4: [Arm_Weapon_R for Arm_Weapon_R in all_arm_weapon_r if Arm_Weapon_R.tier == 4],
+}
 
 
 class Arm_Weapon_L(Part): #laserblades
