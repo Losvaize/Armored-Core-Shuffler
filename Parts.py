@@ -59,12 +59,12 @@ class Head(Part):
         self.tier = tier # Tier 1 Lowest, Tier 4 Highest
 
 all_heads = (
-    Head(0x00, "HD-01-SRVT", "HEAD UNIT", 26500, 122, 350, 816, 154, 149, "DETAILED", "AREA MEMORY", "NONE", "PROVIDED", "NONE", 1), #Head unit with built-in bio sensor.
+    Head(0x00, "HD-01-SRVT", "HEAD UNIT", 26500, 122, 350, 816, 154, 149, "DETAILED", "AREA MEMORY", "NONE", "PROVIDED", "NONE", 0, "N/A", 1), #Head unit with built-in bio sensor.
     Head(0x01, "HD-2002", "HEAD UNIT", 29000, 156, 457, 787, 140, 154, "STANDARD", "AREA MEMORY", "NONE", "NONE", "PROVIDED", 6000, "STANDARD", 2), #Head unit equipped with radar function.
-    Head(0x02, "HD-X1487", "HEAD UNIT", 19000, 166, 420, 975, 160, 185, "ROUGH", "NO MEMORY", "PROVIDED", "PROVIDED", "NONE", 1), #Full range of sensors but without the auto-map function.
+    Head(0x02, "HD-X1487", "HEAD UNIT", 19000, 166, 420, 975, 160, 185, "ROUGH", "NO MEMORY", "PROVIDED", "PROVIDED", "NONE", 0, "N/A", 1), #Full range of sensors but without the auto-map function.
     Head(0x03, "HD-REDEYE", "HEAD UNIT", 41100, 146, 538, 840, 148, 151, "DETAILED", "AREA&PLACE NAME", "NONE", "NONE", "PROVIDED", 5980, "STANDARD", 3), #Equipped with radar and an enhanced auto-map function.
     Head(0x04, "HS-D-9066", "HEAD UNIT", 43200, 138, 657, 885, 165, 232, "STANDARD", "AREA MEMORY", "NONE", "PROVIDED", "PROVIDED", 6120, "STANDARD", 2), #Full range of options and good EG shields.
-    Head(0x05, "HD-GRY-NX", "HEAD UNIT", 14700, 232, 218, 1001, 194, 134, "ROUGH", "NO MEMORY", "NONE", "NONE", "NONE", 1), #Economy Unit with good shields but no optional equipment.
+    Head(0x05, "HD-GRY-NX", "HEAD UNIT", 14700, 232, 218, 1001, 194, 134, "ROUGH", "NO MEMORY", "NONE", "NONE", "NONE", 0, "NA", 1), #Economy Unit with good shields but no optional equipment.
     Head(0x06, "HD-06-RADAR", "HEAD UNIT", 51800, 145, 875, 741, 109, 194, "STANDARD", "AREA&PLACE NAME", "PROVIDED", "NONE", "PROVIDED", 8120, "STANDARD", 3), #Equiped with wide-area radar and various options.
     Head(0x07, "HD-ONE", "HEAD UNIT", 68100, 161, 304, 800, 132, 129, "DETAILED", "AREA MEMORY", "PROVIDED", "PROVIDED", "PROVIDED", 7980, "STANDARD", 4), #Fully equipped with wide-area radar and all options.
     Head(0x08, "HD-08-DISH", "HEAD UNIT", 33200, 133, 716, 870, 205, 162, "STANDARD", "AREA&PLACE NAME", "NONE", "NONE", "NONE", 2), #Equipped with an enhanced auto-map function.
@@ -278,6 +278,13 @@ all_legs = (
 	Legs(0x3C, "LC-MOS4545", "CATERPILLAR", 59000, 3610, 2609, 3990, 905, 753, 7400, 211, 5101, "NONE", 3), #A dreadfully durable monster machine.
 	)  
 
+Legs_by_tier = {
+    1: [Legs for Legs in all_legs if Legs.tier == 1],
+    2: [Legs for Legs in all_legs if Legs.tier == 2],
+    3: [Legs for Legs in all_legs if Legs.tier == 3],
+    4: [Legs for Legs in all_legs if Legs.tier == 4]
+}
+
 class Generator(Part):
     weight: int
     energy_output: int
@@ -343,8 +350,8 @@ all_fcs =(
     FCS(0x44, "COMDEX-C7", "FCS", 11100, 14, 24, 4, "STANDARD", 1), #Maximum of 4 lock-ons, average performance
     FCS(0x45, "COMDEX-G0", "FCS", 22500, 14, 24, 4, "STANDARD", 1), #Maximum of 4 lock-ons, fast lock-on.
     FCS(0x46, "COMDEX-G8", "FCS", 16400, 14, 24, 6, "STANDARD", 1), #Maximum of 6 lock-ons, long-distance lock-on.
-    FCS(0x47, "QX-21", "FCS", 20300, 8, 12, 1, "WIDE & SHALLOW", 1), #Maximum of 1 lock-on, short lock over a wide area. 
-    FCS(0x48, "QX-AF", "FCS", 35700, 10, 16, 2, "WIDE & SHALLOW", 1), #Maximum of 2 lock-ons, short lock. 
+    FCS(0x47, "QX-21", "FCS", 20300, 8, 12, 1, "WIDE & SHALLOW", 2), #Maximum of 1 lock-on, short lock over a wide area. 
+    FCS(0x48, "QX-AF", "FCS", 35700, 10, 16, 2, "WIDE & SHALLOW", 2), #Maximum of 2 lock-ons, short lock. 
     FCS(0x49, "TRYX-BOXER", "FCS", 48100, 10, 19, 3, "TALL", 3), #Maximum of 3 lock-ons, vertical sight. 
     FCS(0x4A, "TRYX-QUAD", "FCS", 63000, 18, 38, 6, "WIDE", 3), #Maximum of 6 lock-ons, horizontal sight.
     FCS(0x4B, "QX-9009", "FCS", 96000, 24, 55, 6, "NARROW & DEEP", 3) #Maximum of 6 lock-ons, longest lock distance.  
