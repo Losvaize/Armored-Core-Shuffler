@@ -517,7 +517,7 @@ all_back_weapons = (
     Back_Weapon(0x76, "RZ-A0", "RADAR", 17900, 480, 387, "PROVIDED", 11500, "CIRCLE", fire_unlocked=False, tier = 1), #This radar uses 2 dishes for enhanced enemy-search capability.
     Back_Weapon(0x77, "RXA-99", "RADAR", 14500, 160, 267, "PROVIDED", 8800, "STANDARD", fire_unlocked=False, tier = 1), #New-type radar permits even wider area to be searched.
     Back_Weapon(0x78, "RXA-77", "RADAR", 23000, 125, 274, "PROVIDED", 8700, "STANDARD", fire_unlocked=False, tier = 1), #This radar can detect the approach of homing missiles.
-    Back_Weapon(0x79, "RZ-A1", "RADAR", 33000, 433, 403, "PROVIDED", 15700, "CIRCLE", fire_unlocked=False, tier = 1),  #Expands the enemy-search range up to the current technological limit.
+    Back_Weapon(0x79, "RZ-A1", "RADAR", 33000, 433, 403, "PROVIDED", 15700, "CIRCLE", fire_unlocked=False, tier = 2),  #Expands the enemy-search range up to the current technological limit.
     Back_Weapon(0x7A, "RZT-333", "RADAR", 27700, 343, 451, "PROVIDED", 11700, "OCTAGON", fire_unlocked=False, tier = 2), #Combines both missile detection and wide-range search capability.
     Back_Weapon(0x7B, "RZ-BBP", "RADAR", 40900, 454, 566, "PROVIDED", 16300, "CIRCLE", fire_unlocked=False, tier = 2), #Highest-quality radar with highest-class performance.
     Back_Weapon(0x7C, "WX-S800/2", "DUAL MISSILE", 69400, 1650, 415, "NONE", "STANDARD", 1120, 60, "SOLID", 515, 11000, 1, 12, False, 3), #Fires 2 missiles with 1 lock-on
@@ -587,7 +587,7 @@ all_arm_weapon_r = (
     Arm_Weapon_R(0x85, "WG-RF/5", "SNIPER RIFLE", 41500, 295, 5, "SPECIAL", 530, 80, "SOLID", 83, 20000, 1, 10, 1), #Long-barrel sniper rifle.
     Arm_Weapon_R(0x86, "WG-RF/P", "SNIPER RIFLE", 33100, 308, 4, "SPECIAL", 612, 60, "SOLID", 95, 16000, 1, 12, 1), #Superior firepower and range, but low reload rate.
     Arm_Weapon_R(0x87, "WG-HG512", "HAND GUN", 26200, 324, 10, "WIDE & SHALLOW", 437, 120, "SOLID", 48, 5800, 1, 8, 3), #Lower performance, but inexpensive.
-    Arm_Weapon_R(0x88, "WG-FG99", "FLAMETHROWER", 58300, 352, 9, "NONE", 512, 500 , "SOLID", 41, 900, 1, 1, 1), #Close-in combat gun shows off its true worth in hand-to-hand combat.
+    Arm_Weapon_R(0x88, "WG-FG99", "FLAMETHROWER", 58300, 352, 9, "NONE", 512, 500 , "SOLID", 41, 900, 1, 1, 2), #Close-in combat gun shows off its true worth in hand-to-hand combat.
     Arm_Weapon_R(0x89, "WG-B2120", "BAZOOKA", 59740, 778, 13, "NARROW & DEEP", 1250, 80, "SOLID", 163, 8200, 1, 16, 2), #High firepower but slow-moving bazooka fire is easily avoidable.
     Arm_Weapon_R(0x8A, "WG-B2180", "BAZOOKA", 75900, 905, 16, "NARROW & DEEP", 1930, 50, "SOLID", 348, 7800, 1, 22, 3), #Ultra-attack bazooka for betting it all on one shot.
     Arm_Weapon_R(0x8B, "WG-XP1000", "PULSE RIFLE", 46000, 188, 246, "SPECIAL", 302, 180, "ENERGY", 0, 15000, 1, 3, 2), #Energy weapon. Noted for its long range and reload speed.
