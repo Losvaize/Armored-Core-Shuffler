@@ -1,10 +1,10 @@
 import Parts
 import random
-#testing weighted probabilities
+#Randomizer can generate ACs with weighting on Specific tiers. Check Parts.py to see Tiers of parts.
 
 def get_random_head_by_tier():
     tiers = [1, 2, 3, 4] 
-    tier_weights = [100, 0, 0, 0] # %chance of each part being selected by the tier.
+    tier_weights = [100, 0, 0, 0] # %chance of each part being selected by the tier.  50, 50, 0 ,0 for example means that you have 50% chance of getting a T1 or T2 Part. No T3 or T4 in Pool.
 
     selected_tier = random.choices(tiers, weights = tier_weights, k=1)[0]
 
@@ -19,8 +19,6 @@ def get_random_head_by_tier():
     else:
         return None
     
-    #print(f"Selected tier: {selected_tier}")
-    #print(f"Eligible heads for this tier: {eligible_heads}")
 
     return random.choice(eligible_heads)
 
@@ -231,7 +229,7 @@ def generate_AC():
     ac_arm_weapon_l_status = "VALID"
     ac_back_weapon_r_status = "VALID"
     ac_back_weapon_l_status = "VALID"
-    percentage_chance_r = 80
+    percentage_chance_r = 80  #Base Percentage chances can me modified here. Logic will still give 100% for specific parts if rolls are unsuccessful.
     percentage_chance_l = 50
     percentage_chance_back_r = 50
     percentage_chance_back_l = 33
@@ -250,7 +248,7 @@ def generate_AC():
         else:
             ac_arm_weapon_r_status = "NO EQUIP"
 
-        if 0 <= percentage_chance_l <= 100:
+        if 0 <= percentage_chance_l <= 100: #Laser Blade Guaranteed if Arm Weapon R is not generated.
             if ac_arm_weapon_r_status == "NO EQUIP":
                 percentage_chance_l = 100
             ac_arm_weapon_l = get_random_Arm_Weapon_L_by_tier()
@@ -264,8 +262,7 @@ def generate_AC():
         ac_arm_weapon_l_status = "EQUIPMENT IMPOSSIBLE"
 
 
-# I 100% chance want a back weapon when I have less than 2 Arm weapons or I have Gun arms.
-# I want a 50% chance of a Back weapon when I have 2 Weapons.
+# Back Weapon is 100% Chance if Weapon arms are present or only one arm is present. Will also guarantee a fire unlocked weapon if AC has none currently.
 
     if ac_arm_weapon_l_status == "NO EQUIP" or ac_arm_weapon_l_status == "EQUIPMENT IMPOSSIBLE" or ac_arm_weapon_r_status == "NO EQUIP" or ac_arm_weapon_r_status == "EQUIPMENT IMPOSSIBLE":    
         percentage_chance_back_r = 100
@@ -277,7 +274,8 @@ def generate_AC():
         ac_back_weapon_r_status = "NO EQUIP"
 
     #print (percentage_chance_back_r)    
-# I want Back weapon L to have a 100% of generating a weapon if the Back weapon r is a radar, and the L cant be a radar.
+
+# If Back Weapon R is generated as a RADAR. 100% chance of getting a back weapon that can deal damage. 
 
     if ac_back_weapon_r.part_type == "RADAR":
         percentage_chance_back_l = 100
@@ -287,8 +285,6 @@ def generate_AC():
     
     else : 
         ac_back_weapon_l_status = "NO EQUIP"
-    
-    #print (percentage_chance_back_l) 
 
     if ac_arm_weapon_r == True:
         ac_remaining_energy -= ac_arm_weapon_r.energy_drain
