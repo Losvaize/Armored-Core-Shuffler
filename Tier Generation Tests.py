@@ -276,7 +276,7 @@ def generate_AC():
     else : 
         ac_back_weapon_r_status = "NO EQUIP"
 
-    print (percentage_chance_back_r)    
+    #print (percentage_chance_back_r)    
 # I want Back weapon L to have a 100% of generating a weapon if the Back weapon r is a radar, and the L cant be a radar.
 
     if ac_back_weapon_r.part_type == "RADAR":
@@ -288,7 +288,7 @@ def generate_AC():
     else : 
         ac_back_weapon_l_status = "NO EQUIP"
     
-    print (percentage_chance_back_l) 
+    #print (percentage_chance_back_l) 
 
     if ac_arm_weapon_r == True:
         ac_remaining_energy -= ac_arm_weapon_r.energy_drain
