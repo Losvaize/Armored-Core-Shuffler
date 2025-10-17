@@ -3,8 +3,8 @@ import random
 #testing weighted probabilities
 
 def get_random_head_by_tier():
-    tiers = [1, 2, 3, 4]
-    tier_weights = [100, 0, 0, 0]
+    tiers = [1, 2, 3, 4] 
+    tier_weights = [100, 0, 0, 0] # %chance of each part being selected by the tier.
 
     selected_tier = random.choices(tiers, weights = tier_weights, k=1)[0]
 
@@ -41,7 +41,7 @@ def get_random_core_by_tier():
 
 def get_random_arms_by_tier():
     tiers = [1, 2, 3, 4]
-    tier_weights = [100, 0, 0, 0]
+    tier_weights = [50, 50, 0, 0]
 
     selected_tier = random.choices(tiers, weights = tier_weights, k=1)[0]
 
@@ -58,7 +58,7 @@ def get_random_arms_by_tier():
 
 def get_random_legs_by_tier():
     tiers = [1, 2, 3, 4]
-    tier_weights = [100, 0, 0, 0]
+    tier_weights = [50, 50, 0, 0]
 
     selected_tier = random.choices(tiers, weights = tier_weights, k=1)[0]
 
@@ -129,7 +129,7 @@ def get_random_FCS_by_tier():
 
 def get_random_Arm_Weapon_R_by_tier():
     tiers = [1, 2, 3, 4]
-    tier_weights = [100, 0, 0, 0]
+    tier_weights = [50, 50, 0, 0]
 
     selected_tier = random.choices(tiers, weights = tier_weights, k=1)[0]
 
@@ -167,7 +167,7 @@ def get_random_Arm_Weapon_L_by_tier():
 
 def get_Back_Weapon_by_tier(guarantee_unlocked, RADAR):
     tiers = [1, 2, 3, 4]
-    tier_weights = [100, 0, 0, 0]
+    tier_weights = [50, 50, 0, 0]
       
     selected_tier = random.choices(tiers, weights = tier_weights, k=1)[0]
 
@@ -209,14 +209,14 @@ def get_Back_Weapon_by_tier(guarantee_unlocked, RADAR):
                 back_weapon_inelgible = False
 
 
-    print(f"Selected tier: {selected_tier}")
-    print(f"Eligible weapons for this tier: {eligible_Back_Weapon}")
-    print(guarantee_unlocked)
+    #print(f"Selected tier: {selected_tier}")
+    #print(f"Eligible weapons for this tier: {eligible_Back_Weapon}")
+    #print(guarantee_unlocked)
 
     return back_weapon
 
 
-def main():
+def generate_AC():
     ac_head = get_random_head_by_tier()
     ac_core = get_random_core_by_tier()
     ac_arms = get_random_arms_by_tier()
@@ -263,6 +263,7 @@ def main():
 
 # I 100% chance want a back weapon when I have less than 2 Arm weapons or I have Gun arms.
 # I want a 50% chance of a Back weapon when I have 2 Weapons.
+
     if ac_arm_weapon_l.name == "NO EQUIP" or ac_arm_weapon_l.name == "EQUIPMENT IMPOSSIBLE" or ac_arm_weapon_r.name == "NO EQUIP" or ac_arm_weapon_r.name == "EQUIPMENT IMPOSSIBLE":    
         percentage_chance_back_r = 100
     ac_back_weapon_r = get_Back_Weapon_by_tier(guarantee_unlocked = ac_arms.humanoid_arm == False, RADAR = False)
@@ -271,6 +272,7 @@ def main():
     else : ac_back_weapon_r.name = "NO EQUIP"
         
 # I want Back weapon L to have a 100% of generating a weapon if the BAck weapon r is a radar, and the L cant be a radar.
+
     if ac_back_weapon_r.part_type == "RADAR":
         percentage_chance_back_l = 100
     ac_back_weapon_l = get_Back_Weapon_by_tier(guarantee_unlocked = False, RADAR = True)
@@ -298,8 +300,25 @@ def main():
 
     if (ac_remaining_weight < 0 or ac_core_weight < 0 or ac_remaining_energy < 0):
         invalid_AC = True
+    else:
+        invalid_AC = False
+
+    
 
 
+
+
+    
+
+    return (invalid_AC, ac_head, ac_core, ac_arms, ac_legs, ac_booster, ac_generator, ac_FCS, ac_arm_weapon_r, ac_arm_weapon_l, ac_back_weapon_r, ac_back_weapon_l, ac_remaining_weight, ac_core_weight, ac_remaining_energy)
+
+
+def main():
+    (invalid_AC, ac_head, ac_core, ac_arms, ac_legs, ac_booster, ac_generator, ac_FCS, ac_arm_weapon_r, ac_arm_weapon_l, ac_back_weapon_r, ac_back_weapon_l, ac_remaining_weight, ac_core_weight, ac_remaining_energy) = generate_AC()
+    
+    while invalid_AC == True:
+        print ("Invalid AC Detected: Retrying...")
+        (invalid_AC, ac_head, ac_core, ac_arms, ac_legs, ac_booster, ac_generator, ac_FCS, ac_arm_weapon_r, ac_arm_weapon_l, ac_back_weapon_r, ac_back_weapon_l, ac_remaining_weight, ac_core_weight, ac_remaining_energy) = generate_AC()
 
     print (ac_head.name)
     print (ac_core.name)
@@ -312,9 +331,7 @@ def main():
     print (ac_arm_weapon_l.name)
     print (ac_back_weapon_r.name)
     print (ac_back_weapon_l.name)
-
-#Todd wanted me to Loop this over so that all the parameters are met for a valid AC project for later.
-
+    
     print(f"Remaining Weight:", ac_remaining_weight, f"Remaining Arm Weight:", ac_core_weight, f"Remaining Energy:", ac_remaining_energy)
 
 if __name__ == "__main__":
